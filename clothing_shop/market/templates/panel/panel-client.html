@@ -1,0 +1,46 @@
+{% extends "panel/base_home.html" %}
+
+{% load  static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+    
+<h1>Panel de usuario</h1>
+<div>
+  <h3>Bienvenido:  {{ user.user_name }}</h3>
+  <h3>Email: {{  user.email }} </h3> 
+  <h4>fecha nacimiento:   {{ user.date_birth }} </h4> 
+  <li class="nav-item"><a class="navbar-brand" href="{% url 'users_app:update-client' user.id %}">actualizar</a> </li>  
+  <li class="nav-item"><a class="navbar-brand" href="{% url 'users_app:user-update_password' user.id %}">actualizar contraseña</a> </li>
+</div>
+
+
+<div class="container">
+    <h3>Favoritos</h3>
+    {% if not favorites %}
+        <h2>No hay favoritos</h2>
+    {% else %}  
+    <div class="row">
+      {% for producto in favorites %}
+          <div class="col-sm-4" class="card" style="width: 15rem;">
+            <img class="card-img-top" src="{{ producto.product.main_image.url }}" alt="Card image cap">
+            <div class="card-body" style="background-color: black";>
+              <h3 class="card-title" style="color: bisque;"> {{ producto.product.name }} </h3>
+              {% if producto.product.offer %}
+              <p class="card-text" style=" color: rgb(83, 211, 83);">$ {{ producto.product.price_discount }}</p>
+              {% else %}
+              <p class="card-text" style=" color: rgb(83, 211, 83);">$ {{ producto.product.sale_price }}</p>
+              {% endif %}
+              <p style="font-size: large; color: beige;"></pstyle>{{ producto.product.marca }}</p>
+            <form method="POST" action="{% url 'favorites_app:remove-favorito' producto.id %}"> {% csrf_token %}
+                <a class="button warning" href="{% url 'product_app:detail-product' producto.product.id %}">Ver</a>
+                <button class="btn btn-danger" type="submit" >Eliminar</button>
+            </form>
+            </div>
+          </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <br>    
+{% endblock content %}

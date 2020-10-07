@@ -1,0 +1,93 @@
+{% extends "product/base_product.html" %}
+
+{% load  static %}
+
+{% block content %}
+
+{% include 'includes/header.html' %}
+
+<div class="main__container_list">
+  <div class="category__container">
+    <h3>Categorias</h3>
+    <ul class="">
+      {% for cantidad in cantidad_productos  %}
+      <h4 class=""><a href="?categoria={{ cantidad }}">{{ cantidad }} ({{ cantidad.num_products }})</a>
+      </h4>
+      <!-- Default checked -->
+      {% for sub in categoria.sub_categoria.all %}
+      <div class="">
+        <li><a href="?sub_categoria={{ sub }}"> {{sub}} </a> </li>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="main__product_container ">
+    <section>
+      <div class="main__card">
+        {% for producto in productos %}
+        <br>
+        <div class="main__row">
+          <div class="image_product_container">
+            <img src="{{ producto.main_image.url }}">
+          </div>
+          <div class="description__product__container">
+            {% if producto.offer %}
+            <h4 class="">${{ producto.price_discount }}</h4>
+            <h6 class="" style="color: rgb(83, 211, 83); text-decoration:line-through;">$
+              {{ producto.sale_price }} </h6>
+            {% else %}
+            <h4 class="">${{ producto.sale_price }}</h4>
+            {% endif %}
+            <h5>
+              <p class="">{{producto.name}}</p>
+            </h5>
+            <p class="">Marca: {{producto.marca}}</p>
+            <p class="">cantidad: {{producto.stock}}</p>
+            <div class="buttons__container">
+              <button class="button"> <a href="{% url 'product_app:detail-product' producto.id %}" class="btn btn-primary ">Ver</a></button>
+              <form method="POST" action="{% url 'favorites_app:add-favorites' producto.id %}"> {% csrf_token %}
+                <button type="submit" class="btn btn-warning "><i class="far fa-heart "> </i></button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</div>
+<!-- Pagination -->
+<div class="pagination_container">
+  {% if is_paginated %}
+  <nav aria-label="...">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li class="page-item disabled">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1"
+          aria-disabled="true">Previous</a>
+      </li>
+      {% endif  %}
+      <!--para obtener el valor de la pagina donde esta"paginator.page_range"-->
+      {% for pagina in paginator.page_range %}
+      {% ifequal pagina page_obj.number  %}
+      <li class="page-item active">
+        <a class="page-link">{{ pagina }} <span class="sr-only">(current)</span></a>
+      </li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="?page={{ pagina }}">{{ pagina }}</a></li>
+      {% endifequal %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      </li>
+      {% endif  %}
+    </ul>
+  </nav>
+  {% endif  %}
+</div>
+
+
+
+{% endblock content %}

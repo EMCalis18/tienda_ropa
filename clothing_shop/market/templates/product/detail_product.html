@@ -1,0 +1,49 @@
+{% extends "product/base_product.html" %}
+
+{% load  static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<div class="container sm-8">
+  <div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="{{ product.main_image.url }}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title"> {{ product.name }} </h5>
+      <p class="card-text"> {{ product.description }} </p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Genero: {{ product.gender }}</li>
+      <li class="list-group-item">Marca: {{ product.marca }}</li>
+      <li class="list-group-item">Stock: {{ product.stock }} </li>
+      {% if product.offer %}
+         <li class="list-group-item">Precio de compra:  {{ product.price_discount }}</li>
+      {% else %}
+         <li class="list-group-item">Precio de compra:  {{ product.sale_price }}</li>
+      {% endif %}
+      <p><span class="label">colores:</span></p>
+      {% for c in product.color.all %}
+           <li class="list-group-item"> {{ c.color }}</li>
+      {% endfor %}
+    </ul>
+    <div class="card-body">
+      <div id="favorite-icon">
+        <form  method="POST" action="{% url 'favorites_app:add-favorites' product.id %}"> {% csrf_token %}
+            <button  type="submit" class="btn btn-warning" ><i class="far fa-heart"> </i></button>
+          </form>
+      
+      <a href="#" class="card-link sm-6">Comprar</a>
+      {% if not user.ocupation == user.CLIENTE %}
+      {% if not user.is_anonymous  %}
+        <a href="{% url 'product_app:delete-product' product.id %}" class="alert button clear">Eliminar</a>    
+        <a href="{% url 'product_app:update-product' product.id %}" class="alert button clear">Modificar</a>    
+      {% endif %}     
+      {% endif %}
+               
+    </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

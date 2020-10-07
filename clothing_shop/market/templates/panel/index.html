@@ -1,0 +1,60 @@
+{% extends "panel/base_home.html" %}
+
+{% load  static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<div class="jumbotron text-center">
+  <h1>SHOP CLOTHING</h1>
+</div>
+<!-- list NEW PRODUCTS -->
+<div class="container">
+  <h3>Productos Nuevos</h3>
+  <div class="row">
+    {% for producto in productos %}
+        <div class="col-sm-4" class="card" style="width: 15rem;">
+          <img class="card-img-top" src="{{ producto.main_image.url }}" alt="Card image cap">
+          <div class="card-body" style="background-color: black";>
+            <h5><a href="{% url 'product_app:detail-product' producto.id %}" class="card-title" style="font-size: large; color: beige;"> {{ producto.name }} </a> </h5>
+            <p class="card-text" style=" color: rgb(83, 211, 83);">$ {{ producto.sale_price }}</p>
+            <p style="font-size: large; color: beige;"></pstyle>{{ producto.marca }}</p>
+            <div id="icon-favorito">
+              <form  method="POST" action="{% url 'favorites_app:add-favorites' producto.id %}"> {% csrf_token %}
+                <button  type="submit" class="btn btn-warning" ><i class="far fa-heart"> </i></button>
+              </form>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+<br> 
+<!-- list OFERS PRODUCTS -->
+<div class="container " >
+  <h3>Productos en oferta</h3>
+  <div class="row">
+    {% for producto in productos_oferta %}
+        <div class="col-sm-4" class="card" style="width: 15rem;">
+          <img class="card-img-top" src="{{ producto.main_image.url }}" alt="Card image cap">
+          <div class="card-body" style="background-color: black";>
+            <h5><a href="{% url 'product_app:detail-product' producto.id %}" class="card-title" style="font-size: large; color: beige;"> {{ producto.name }} </a> </h5>
+            <h3><p class="card-text"  style= "color: rgb(83, 211, 83); ">$ {{ producto.price_discount }} </p></h3>
+            <p class="card-text"  style= "color: rgb(83, 211, 83); text-decoration:line-through;">$ {{ producto.sale_price }} </p>
+            <p style="font-size: large; color: beige;"></pstyle>{{ producto.marca }}</p>
+            <p class="card-text" style= "color: rgb(83, 211, 83);">% {{ producto.discount }}</p>
+            <div id="icon-favorito">
+            <form  method="POST" action="{% url 'favorites_app:add-favorites' producto.id %}"> {% csrf_token %}
+              <button  type="submit" class="btn btn-warning" ><i class="far fa-heart"> </i></button>
+            </form>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="jumbotron text-center">
+</div>
+
+
+{% endblock content %}

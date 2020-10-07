@@ -1,0 +1,22 @@
+{% extends "product/base_product.html" %}
+
+{% block title %}
+    Modificar {{ object.name }}
+{% endblock title %}
+
+
+{% block content %}
+{% include 'includes/header.html' %}
+    <div class="container mt-5">
+        <div class="">
+            <h1 class=""> Modificar el producto {{ object.name }}</h1>
+            <div class="">
+                <form method="POST">{% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="button success" type="submit ">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+{% endblock content %}

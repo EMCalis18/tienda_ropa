@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load  static %}
+
+{% block content %}
+
+<div class="container">
+  <h5  style="margin-bottom: 1em; text-align: center;">¿Desea eliminar el producto?</h5>  
+  <form class="" 
+    action="{% url 'product_app:delete-product' product.id %}" method="POST">
+    {% csrf_token %}
+    
+    <div >
+        <div >
+            <div >
+              Quedan: {{ product.count }}
+            </div>
+            <div >
+              <h4>{{ product.name }}</h4>
+              <p>Proveedor: {{ product.provider }}</p>
+              <p>Descripcion: {{ product.description }}</p>
+              <p></p>
+            </div>
+        </div>
+    </div>
+    
+    <div >
+      <button type="submit" class="alert button clear">Eliminar</button>
+    </div>
+  </form>
+</div>
+
+{% endblock content %}

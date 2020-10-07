@@ -1,0 +1,96 @@
+{% extends "venta/base_venta.html" %}
+
+{% load  static %}
+
+{% block content %}
+
+{% include 'includes/header.html' %}
+<div class="all__container">
+  <div class="main__container container-md mx-5 mt-5  mb-12 text-white">
+    <h2 class="text-center ">Venta</h2>
+    <div class="add-product__container  mx-5 mb-8">
+      <form class="" id="name" name="name" method="POST">{% csrf_token %}
+        <span class="input-group-label">NOMBRE PRODUCTO:</span>
+        {{ form.name }}
+        {{ form.barcode }}
+        {{ form.count }}
+        <input type="submit" class="btn btn-success" value="Agregar">
+      </form>
+    </div>
+
+    <div class="mt-5 list__container" style="padding: 1.5em;">
+      <!-- contendor de la lista de productos en venta -->
+      <div class="">
+        <h5 class=""> Productos en Venta</h5>
+        <table class="">
+          <thead>
+            <th width="250">Nombres</th>
+            <th width="120">Precio ($)</th>
+            <th width="100">Cantidad</th>
+            <th>Acciones</th>
+            <th></th>
+          </thead>
+          <tbody>
+            {% for producto in productos %}
+            <tr>
+              <td>{{ producto.product.name }}</td>
+              {% if producto.product.offer %}
+              <td> ${{ producto.product.price_discount }}</td>
+              {% else %}
+              <td>${{ producto.product.sale_price }}</td>
+              {% endif %}
+              <td>{{ producto.count }}</td>
+              <td>
+                <form action="{% url 'sale_app:carshop-update-less' producto.id %}" method="POST">{% csrf_token %}
+                  <button type="submit" class="btn btn-success"><i class="fas fa-minus"></i></button>
+                </form>
+              </td>
+              <td>
+                <form action="{% url 'sale_app:carshop-update-more' producto.id %}" method="POST">{% csrf_token %}
+                  <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i></button>
+                </form>
+              </td>
+              <td>
+                <form action="{% url 'sale_app:carshop-delete' producto.id %}" method="POST">{% csrf_token %}
+                  <button type="submit" class="btn btn-danger"><i class="fas fa-times"></i></button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- contiene los resultados restantes -->
+    <div class="ml-5 ">
+      <div class="bg-success rounded p-3 text-center">
+        <h5>Total a Cobrar:</h5>
+        <h2> $ {{ total_cobrar }} </h2>
+      </div>
+
+      <br>
+      <div class="my-2">
+        <form class="" action="{% url 'sale_app:venta-simple' %}" method="POST">{% csrf_token %}
+          <button type="submit" class="btn btn-warning my-1" style="padding: 1.5em;">
+            <i class="fas fa-credit-card"></i>
+            <span>Pagar Todo</span>
+          </button>
+        </form>
+
+        <button data-open="exampleModal1" class="my-1 bg-info" style="padding: 1.5em;">
+          <i class="fas fa-cash-register"></i>
+          <span>Cobrar e Imprimir</span>
+        </button>
+
+        <form class="my-1" action="{% url 'sale_app:carshop-delete_all' %}" method="POST">{% csrf_token %}
+          <button type="submit" class="btn btn-danger">
+            <i class="fi-trash"></i>
+            <span>Limpiar Todo</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

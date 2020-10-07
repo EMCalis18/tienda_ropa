@@ -1,0 +1,57 @@
+{% extends "users/base_users.html" %}
+
+{% load  static %}
+
+{% block content %}
+
+
+{% include 'includes/header.html' %}
+
+
+
+<div class="container">
+  <h2 >Registrarse</h2>
+  <form method="POST">{% csrf_token %}
+    <div class="form-row">
+        <div class="col-md-3 mb-2" class="mx-auto">
+          {{ form.email }}
+        </div>
+        {% for error in form.email.errors %}
+        <p class="col" style="color: red;">
+          {{ error|escape }}
+        </p>
+        {% endfor %}
+        <div class="col-md-4 mb-2" >
+          {{form.user_name}}
+        </div>
+        <select class="custom-select custom-select-sm">
+          <option selected>Seleciona el genero</option>
+          <option value={{form.genero.VARON}}>Hombre</option>
+          <option value={{form.genero.MUJER}}>Mujer</option>
+          <option value={{form.genero.OTRO}}>Otro</option>
+        </select>
+        <div  id="date-picker-example" class="col-md-4 mb-2" class="md-form md-outline input-with-post-icon datepicker" class="mx-auto">
+          {{ form.date_birth }}
+          <i class="fas fa-calendar input-prefix" tabindex=0></i>
+        </div>
+        <div class="col-md-4 mb-2">
+          {{ form.password1 }}
+        </div>
+        {% for error in form.password1.errors %}
+        <p class="col" style="color: red;">
+          {{ error|escape }}
+        </p>
+        {% endfor %}
+        <div class="form-group" class="col-md-4 mb-2">
+          {{ form.password2 }}
+        </div>
+        {% for error in form.password2.errors %}
+        <p class="col" style="color: red;">
+          {{ error|escape }}
+        </p>
+        {% endfor %}
+    </div>
+      <button type="submit"  class="btn btn-primary">Guardar</button>
+  </form>
+</div>
+{% endblock content %}

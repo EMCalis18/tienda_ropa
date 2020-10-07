@@ -1,0 +1,92 @@
+{% extends "product/base_product.html" %}
+{% load  static %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+
+<div class="main__container">
+  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+    <div class="product_container">
+      <div class="">
+        <label for="inputEmail4">Nombre</label>
+        {{form.name}}
+      </div>
+      <div class="main__description__container">
+        <label for="inputPassword4">Descripcion</label>
+        {{form.description}}
+      </div>
+      <div class="">
+        <label for="inputPassword4">Genero</label>
+        {{ form.gender }}
+      </div>
+    </div>
+    <div class="product_container">
+      <div class="">
+        <label for="inputEmail4">Cantidad en Almacen(Stock):</label>
+        {{form.stock}}
+      </div>
+      <div class="">
+        <label for="inputPassword4">Precio Compra:</label>
+        {{form.purchase_price}}
+      </div>
+      {% for error in form.purchase_price.errors %}
+      <p class="cell" style="color: red;">
+        {{ error|escape }}
+      </p>
+      {% endfor %}
+      <div class="">
+        <label for="inputPassword4">Precio Venta:</label>
+        {{form.sale_price}}
+      </div>
+      {% for error in form.sale_price.errors %}
+      <p class="cell" style="color: red;">
+        {{ error|escape }}
+      </p>
+      {% endfor %}
+    </div>
+    <div class="product_container">
+      <div class="">
+        <label for="inputCity">Imagen Principal:</label>
+        {{form.main_image}}
+      </div>
+      <div class="">
+        <label for="inputState">Marca</label>
+        {{form.marca}}
+      </div>
+      <div class="">
+        <label for="inputZip">Color: </label>
+        {{form.color}}
+      </div>
+    </div>
+    <div class="product_container">
+      <div class="">
+        <label for="inputCity">Unidad de Medida:</label>
+        {{ form.unit }}
+      </div>
+      <div class="">
+        <label for="inputState">talle por numero:</label>
+        {{ form.sizeNumber }}
+      </div>
+      <div class="">
+        <label for="inputZip">talle por letra: </label>
+        {{ form.size }}
+      </div>
+      <div class="">
+        <label for="inputZip">categoria: </label>
+        {{ form.category }}
+      </div>
+      <div class="">
+        <label for="inputZip">bolean: </label>
+        {{ form.offer }}
+      </div>
+      <div class="">
+        <label for="inputZip">descuento: </label>
+        {{ form.discount }}
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}

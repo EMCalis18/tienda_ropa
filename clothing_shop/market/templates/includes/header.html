@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light  ">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+    aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation"></button>
+  <a class="navbar-brand" href="{% url 'panel_app:index' %}">Inicio</a>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active"></li> <a class="navbar-brand" href="{% url 'product_app:list-product' %}">Lista de
+        productos </a> </li>
+      {% if  user.is_anonymous %}
+      <!-- SI NO ES USUARIO LOGEADO -->
+
+      <li class="nav-item"> <a class="navbar-brand float-right" href="{% url 'users_app:login' %}">Iniciar sesion</a>
+      </li>
+      <li class="nav-item"> <a class="navbar-brand" href="{% url 'users_app:register-cliente' %}">Registrarme</a>
+      </li>
+      {% else %}
+      <!-- SI ES USUARIO LOGEADO -->
+
+      <li class="nav-item"><a class="navbar-brand" href="#">{{ user.user_name }}</a></li>
+      <li class="nav-item"><a class="navbar-brand" href="{% url 'panel_app:panel-user' %}">Perfil</a></li>
+      <li class="nav-item"><a class="navbar-brand" href="{% url 'users_app:log-out' %}">Salir</a> </li>
+
+
+
+      {% if user.ocupation == user.CLIENTE  %}
+      <!-- SI ES CLIENTE -->
+
+
+
+      {% elif user.ocupation == user.EMPLEADO %}
+      <!-- SI ES EMPLEADO -->
+
+      <li class="nav-item"><a class="navbar-brand" href="{% url 'product_app:create-product' %}">Anadir producto</a>
+      <li class="nav-item"><a class="navbar-brand" href="{% url 'sale_app:sale-index' %}">realizar venta</a>
+
+      </li>
+
+      {% elif user.ocupation == user.ADMINISTRADOR %}
+      <!-- SI ES ADM -->
+
+      <li class="nav-item"><a class="navbar-brand" href="{% url 'product_app:create-product' %}">Anadir producto</a>
+      </li>
+
+      {% endif %}
+      {% endif %}
+    </ul>
+    <form class="form-inline my-2 my-lg-0" method="GET">
+      <input class="form-control mr-sm-2" id="kword" name="kword" type="search" placeholder="Search"
+        aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+    </form>
+  </div>
+</nav>
